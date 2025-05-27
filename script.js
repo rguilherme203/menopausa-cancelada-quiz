@@ -184,7 +184,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 nextBtn.addEventListener('click', () => {
                     // Coletar sintomas selecionados
                     selectedSymptoms = Array.from(group.querySelectorAll('input[type="checkbox"]:checked')).map(cb => cb.value);
-                    showResults(); // <-- Chama showResults ao invés de loadQuestion(++currentQuestion)
+                    showResults(); // Só chama showResults aqui!
                 });
                 optionsDiv.appendChild(nextBtn);
             }
@@ -204,9 +204,8 @@ document.addEventListener('DOMContentLoaded', function() {
             currentQuestion++;
             if (currentQuestion < questions.length) {
                 loadQuestion();
-            } else {
-                showResults();
             }
+            // Não chama showResults aqui! Só na última pergunta (multi)
         }, 300);
     }
 
@@ -258,18 +257,21 @@ document.addEventListener('DOMContentLoaded', function() {
             }]
         };
 
-        fetch('https://sheetdb.io/api/v1/x6jebjfxepf9n', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(payload)
-        })
-        .then(response => response.json())
-        .then(data => {
-            console.log('Dados enviados para o banco:', data);
-        })
-        .catch(error => {
-            console.error('Erro ao enviar dados:', error);
-        });
+        // Só envia se nome, email e telefone estiverem preenchidos
+        if (userData.nome && userData.email && userData.telefone) {
+            fetch('https://sheetdb.io/api/v1/x6jebjfxepf9n', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Dados enviados para o banco:', data);
+            })
+            .catch(error => {
+                console.error('Erro ao enviar dados:', error);
+            });
+        }
     }
 
     // Reiniciar o quiz
