@@ -214,6 +214,7 @@ document.addEventListener('DOMContentLoaded', function() {
         progressBar.style.width = `${progress}%`;
     }
 
+    // Mostrar resultados e enviar para SheetDB
     function showResults() {
         quizContainer.classList.remove('active');
         resultsSection.classList.add('active');
@@ -262,11 +263,9 @@ document.addEventListener('DOMContentLoaded', function() {
         })
         .then(response => response.json())
         .then(data => {
-            // Opcional: mostrar mensagem de sucesso
             console.log('Dados enviados para o banco:', data);
         })
         .catch(error => {
-            // Opcional: mostrar mensagem de erro
             console.error('Erro ao enviar dados:', error);
         });
     }
