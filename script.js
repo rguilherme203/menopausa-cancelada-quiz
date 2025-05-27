@@ -13,7 +13,6 @@ document.addEventListener('DOMContentLoaded', function() {
     const phaseDiv = document.getElementById('phase');
     const symptomsDiv = document.getElementById('symptoms');
     const risksDiv = document.getElementById('risks');
-    const tipsDiv = document.getElementById('tips');
 
     // Perguntas do quiz
     const questions = [
@@ -35,39 +34,32 @@ document.addEventListener('DOMContentLoaded', function() {
         // Pontuação total: quanto maior, mais sintomas e mais avançada a fase
         const total = answers.reduce((a, b) => a + b, 0);
 
-        // Fase e relatório
         if (total <= 5) {
             return {
                 phase: "Fase Inicial do Climatério",
                 symptoms: "Você apresenta poucos sintomas ou sinais leves. É provável que esteja no início do climatério, quando as alterações hormonais começam, mas ainda não impactam fortemente o dia a dia.",
-                risks: "Mesmo com sintomas leves, é importante observar mudanças e manter acompanhamento médico. O não tratamento pode levar a piora dos sintomas e aumento do risco de doenças cardiovasculares e ósseas no futuro.",
-                tips: [
-                    "Mantenha hábitos saudáveis: alimentação equilibrada, exercícios e sono regular.",
-                    "Faça exames periódicos e converse com seu ginecologista sobre prevenção.",
-                    "Busque informações confiáveis sobre o climatério e menopausa."
-                ]
+                risks: `
+                    <strong>Riscos do não tratamento:</strong> Mesmo com sintomas leves, é fundamental buscar acompanhamento médico. O climatério é uma fase de transição que pode evoluir rapidamente. Sem tratamento, há risco de agravamento dos sintomas, como insônia, ansiedade, irritabilidade e alterações do ciclo menstrual. Além disso, a falta de acompanhamento pode levar ao desenvolvimento silencioso de doenças cardiovasculares, osteoporose, perda de massa muscular e aumento do risco de depressão. <br><br>
+                    <span style="color:#a259c6;font-weight:bold;">Não ignore os sinais do seu corpo! O tratamento precoce é essencial para garantir qualidade de vida, prevenir complicações e promover um envelhecimento saudável.</span>
+                `
             };
         } else if (total <= 12) {
             return {
                 phase: "Climatério em Evolução",
                 symptoms: "Você apresenta sintomas moderados, como alterações de humor, sono e ondas de calor. Isso indica que está em uma fase intermediária do climatério, com maior oscilação hormonal.",
-                risks: "Sem tratamento, os sintomas podem se intensificar, afetando qualidade de vida, autoestima e relacionamentos. O risco de osteoporose, doenças cardíacas e depressão aumenta.",
-                tips: [
-                    "Procure orientação médica para avaliar necessidade de reposição hormonal ou outras terapias.",
-                    "Pratique atividades relaxantes, como meditação ou yoga.",
-                    "Converse com outras mulheres que passam pelo mesmo momento para trocar experiências."
-                ]
+                risks: `
+                    <strong>Riscos do não tratamento:</strong> Nesta fase, os sintomas podem se intensificar rapidamente, afetando sua qualidade de vida, autoestima, relacionamentos e desempenho profissional. O não tratamento pode resultar em agravamento de insônia, ansiedade, depressão, dores articulares e fadiga crônica. Além disso, aumenta significativamente o risco de doenças cardiovasculares, osteoporose, perda de memória e alterações metabólicas, como ganho de peso e diabetes.<br><br>
+                    <span style="color:#a259c6;font-weight:bold;">Procure um profissional de saúde! O acompanhamento médico é indispensável para evitar complicações graves e garantir bem-estar físico e emocional.</span>
+                `
             };
         } else {
             return {
                 phase: "Menopausa Instalada",
                 symptoms: "Você apresenta sintomas intensos e frequentes, típicos da menopausa. Isso indica que a produção hormonal já está bastante reduzida.",
-                risks: "Sem tratamento, há maior risco de doenças cardiovasculares, osteoporose, depressão, insônia crônica e piora dos sintomas físicos e emocionais.",
-                tips: [
-                    "Busque acompanhamento médico especializado para tratamento individualizado.",
-                    "Adote uma rotina de autocuidado: alimentação rica em cálcio, exercícios de força e lazer.",
-                    "Não negligencie sintomas emocionais: procure apoio psicológico se necessário."
-                ]
+                risks: `
+                    <strong>Riscos do não tratamento:</strong> A menopausa sem acompanhamento pode trazer consequências sérias e irreversíveis. O risco de doenças cardiovasculares (infarto, AVC), osteoporose com fraturas, depressão profunda, insônia crônica, perda de massa muscular e deterioração da saúde sexual é muito elevado. Além disso, sintomas como ondas de calor, suores noturnos, irritabilidade e fadiga podem se tornar incapacitantes, prejudicando sua autonomia e qualidade de vida.<br><br>
+                    <span style="color:#a259c6;font-weight:bold;">O tratamento médico é urgente e indispensável nesta fase! Não adie o cuidado com sua saúde. Procure um especialista para avaliação e orientação personalizada.</span>
+                `
             };
         }
     }
@@ -145,8 +137,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
         phaseDiv.textContent = report.phase;
         symptomsDiv.innerHTML = `<strong>Sintomas:</strong> ${report.symptoms}`;
-        risksDiv.innerHTML = `<strong>Riscos do não tratamento:</strong> ${report.risks}`;
-        tipsDiv.innerHTML = `<strong>Dicas:</strong><ul>${report.tips.map(tip => `<li>${tip}</li>`).join('')}</ul>`;
+        risksDiv.innerHTML = report.risks;
     }
 
     // Reiniciar o quiz
