@@ -184,14 +184,12 @@ document.addEventListener('DOMContentLoaded', function() {
                 nextBtn.addEventListener('click', () => {
                     // Coletar sintomas selecionados
                     selectedSymptoms = Array.from(group.querySelectorAll('input[type="checkbox"]:checked')).map(cb => cb.value);
-                    loadQuestion(++currentQuestion); // Avança para mostrar resultado
+                    showResults(); // <-- Chama showResults ao invés de loadQuestion(++currentQuestion)
                 });
                 optionsDiv.appendChild(nextBtn);
             }
 
             updateProgressBar();
-        } else {
-            showResults();
         }
     }
 
@@ -204,7 +202,11 @@ document.addEventListener('DOMContentLoaded', function() {
         // Avançar para a próxima pergunta após um breve delay
         setTimeout(() => {
             currentQuestion++;
-            loadQuestion();
+            if (currentQuestion < questions.length) {
+                loadQuestion();
+            } else {
+                showResults();
+            }
         }, 300);
     }
 
