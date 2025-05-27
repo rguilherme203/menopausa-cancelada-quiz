@@ -15,22 +15,31 @@
 
         <div id="intro" class="section active">
             <h2>Bem-vinda ao Quiz Menopausa Cancelada</h2>
-            <p>Responda sinceramente para identificar sua fase, sintomas e riscos do climatério e menopausa.</p>
-            <button id="start-btn" class="btn">Começar</button>
+            <p>Preencha seus dados para começar:</p>
+            <form id="user-form">
+                <div class="form-group">
+                    <label for="nome">Nome:</label>
+                    <input type="text" id="nome" name="nome" required>
+                </div>
+                <div class="form-group">
+                    <label for="email">E-mail:</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+                <div class="form-group">
+                    <label for="telefone">Telefone:</label>
+                    <input type="tel" id="telefone" name="telefone" required pattern="\\d{10,}">
+                </div>
+                <button type="submit" class="btn">Começar</button>
+            </form>
         </div>
 
         <div id="quiz-container" class="section">
             <div id="progress-bar">
                 <div id="progress"></div>
             </div>
-            <div id="question-number">Pergunta <span id="current">1</span> de <span id="total">7</span></div>
+            <div id="question-number">Pergunta <span id="current">1</span> de <span id="total">8</span></div>
             <div id="question-text"></div>
-            <div class="options">
-                <button class="option-btn" data-value="3">Sempre</button>
-                <button class="option-btn" data-value="2">Frequentemente</button>
-                <button class="option-btn" data-value="1">Às vezes</button>
-                <button class="option-btn" data-value="0">Nunca</button>
-            </div>
+            <div class="options" id="options"></div>
         </div>
 
         <div id="results" class="section">
@@ -38,6 +47,7 @@
             <div id="phase"></div>
             <div id="symptoms"></div>
             <div id="risks"></div>
+            <div id="nutri"></div>
             <button id="restart-btn" class="btn">Refazer o Quiz</button>
         </div>
     </div>
