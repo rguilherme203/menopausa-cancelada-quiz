@@ -18,6 +18,11 @@ document.addEventListener('DOMContentLoaded', function() {
     const risksDiv = document.getElementById('risks');
     const nutriDiv = document.getElementById('nutri');
 
+    // Permitir apenas números no campo de telefone
+    telefoneInput.addEventListener('input', function(e) {
+        this.value = this.value.replace(/\D/g, '');
+    });
+
     // Dados da usuária
     let userData = {
         nome: "",
@@ -113,14 +118,19 @@ document.addEventListener('DOMContentLoaded', function() {
     // Validação e início do quiz
     function handleFormSubmit(e) {
         e.preventDefault();
-        // Validação simples
-        if (!nomeInput.value.trim() || !emailInput.value.trim() || !telefoneInput.value.trim()) {
-            alert("Por favor, preencha todos os campos.");
+        const telefoneVal = telefoneInput.value.trim();
+        if (
+            !nomeInput.value.trim() ||
+            !emailInput.value.trim() ||
+            !telefoneVal ||
+            !/^\d{11}$/.test(telefoneVal)
+        ) {
+            alert("Por favor, preencha todos os campos corretamente. O telefone deve ter 11 dígitos, apenas números.");
             return;
         }
         userData.nome = nomeInput.value.trim();
         userData.email = emailInput.value.trim();
-        userData.telefone = telefoneInput.value.trim();
+        userData.telefone = telefoneVal;
         startQuiz();
     }
 
