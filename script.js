@@ -214,7 +214,6 @@ document.addEventListener('DOMContentLoaded', function() {
         progressBar.style.width = `${progress}%`;
     }
 
-    // Mostrar os resultados
     function showResults() {
         quizContainer.classList.remove('active');
         resultsSection.classList.add('active');
@@ -243,6 +242,33 @@ document.addEventListener('DOMContentLoaded', function() {
                 Uma alimentação adequada pode aliviar sintomas, prevenir doenças e melhorar sua qualidade de vida de forma natural, sem necessidade de remédios ou hormônios que podem trazer efeitos colaterais graves.
             </div>
         `;
+
+        // Enviar dados para o Google Sheets via SheetDB
+        const payload = {
+            data: [{
+                Nome: userData.nome,
+                Email: userData.email,
+                Telefone: userData.telefone,
+                Respostas: JSON.stringify(answers),
+                Sintomas: selectedSymptoms.join(', '),
+                Data: new Date().toLocaleString()
+            }]
+        };
+
+        fetch('https://sheetdb.io/api/v1/x6jebjfxepf9n', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+        })
+        .then(response => response.json())
+        .then(data => {
+            // Opcional: mostrar mensagem de sucesso
+            console.log('Dados enviados para o banco:', data);
+        })
+        .catch(error => {
+            // Opcional: mostrar mensagem de erro
+            console.error('Erro ao enviar dados:', error);
+        });
     }
 
     // Reiniciar o quiz
