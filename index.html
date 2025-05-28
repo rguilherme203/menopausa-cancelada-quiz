@@ -3,42 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Menopausa Cancelada</title>
+    <title>Menopausa Cancelada - Quiz</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <div class="container">
         <header>
             <h1>Menopausa Cancelada</h1>
-            <p>Descubra em que fase do climatério você está e como cuidar da sua saúde!</p>
+            <p>Descubra em que fase do climatério você está e os riscos de não tratar os sintomas!</p>
         </header>
 
         <div id="intro" class="section active">
-            <h2>Bem-vinda ao Quiz Menopausa Cancelada</h2>
-            <p>Preencha seus dados para começar:</p>
             <form id="user-form">
-                <div class="form-group">
-                    <label for="nome">Nome:</label>
-                    <input type="text" id="nome" name="nome" required>
-                </div>
-                <div class="form-group">
-                    <label for="email">E-mail:</label>
-                    <input type="email" id="email" name="email" required>
-                </div>
-                <div class="form-group">
-                    <label for="telefone">Telefone:</label>
-                    <input 
-                        type="tel" 
-                        id="telefone" 
-                        name="telefone" 
-                        required 
-                        pattern="^\d{11}$" 
-                        maxlength="11"
-                        placeholder="11999999999"
-                        title="Digite apenas números, com DDD. Exemplo: 11999999999"
-                    >
-                </div>
-                <button type="submit" class="btn">Começar</button>
+                <h2>Preencha seus dados para começar</h2>
+                <input type="text" id="nome" placeholder="Nome" required>
+                <input type="email" id="email" placeholder="E-mail" required>
+                <input type="text" id="telefone" placeholder="Telefone (apenas números)" maxlength="11" required>
+                <button type="submit" class="btn">Iniciar Quiz</button>
             </form>
         </div>
 
