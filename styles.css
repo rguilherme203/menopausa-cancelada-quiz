@@ -48,29 +48,20 @@ h1 {
     text-align: center;
 }
 
-#intro p {
-    margin-bottom: 20px;
+#intro form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    align-items: center;
 }
 
-.form-group {
-    margin-bottom: 15px;
-    text-align: left;
-}
-.form-group label {
-    display: block;
-    margin-bottom: 5px;
-    color: #7c2fa0;
-    font-weight: bold;
-}
-.form-group input {
-    width: 100%;
-    padding: 8px;
+#intro input {
+    width: 90%;
+    max-width: 350px;
+    padding: 10px;
     border: 1.5px solid #a259c6;
-    border-radius: 4px;
+    border-radius: 5px;
     font-size: 16px;
-}
-.form-group input:invalid {
-    border-color: #e74c3c;
 }
 
 .btn {
@@ -82,7 +73,7 @@ h1 {
     cursor: pointer;
     font-size: 16px;
     transition: background-color 0.3s;
-    margin-top: 20px;
+    margin-top: 10px;
 }
 
 .btn:hover {
@@ -140,19 +131,11 @@ h1 {
     border-color: #7c2fa0;
 }
 
-.checkbox-group {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-    margin: 20px 0;
-}
 .checkbox-group label {
+    display: block;
+    margin-bottom: 8px;
     font-size: 16px;
     color: #7c2fa0;
-    cursor: pointer;
-}
-.checkbox-group input[type="checkbox"] {
-    margin-right: 8px;
 }
 
 #results {
