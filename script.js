@@ -131,11 +131,6 @@ document.addEventListener('DOMContentLoaded', function() {
         userData.nome = nomeInput.value.trim();
         userData.email = emailInput.value.trim();
         userData.telefone = telefoneVal;
-        startQuiz();
-    }
-
-    // Iniciar o quiz
-    function startQuiz() {
         introSection.classList.remove('active');
         quizContainer.classList.add('active');
         currentQuestion = 0;
