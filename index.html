@@ -1,46 +1,336 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Menopausa Cancelada - Quiz</title>
-    <link rel="stylesheet" href="styles.css">
+  <meta charset="UTF-8">
+  <title>Quiz Menopausa</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      background: #f3e8ff;
+      font-family: 'Montserrat', Arial, sans-serif;
+      min-height: 100vh;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .quiz-container {
+      background: #fff;
+      border-radius: 18px;
+      box-shadow: 0 8px 32px #a21caf22;
+      max-width: 400px;
+      width: 100%;
+      margin: 40px 0;
+      padding: 32px 24px 24px 24px;
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+    }
+    .progress-bar-bg {
+      width: 100%;
+      height: 10px;
+      background: #ede9fe;
+      border-radius: 8px;
+      margin-bottom: 32px;
+      overflow: hidden;
+    }
+    .progress-bar {
+      height: 100%;
+      background: linear-gradient(90deg, #a21caf, #9333ea);
+      border-radius: 8px;
+      transition: width 0.3s;
+    }
+    .question {
+      font-size: 1.2rem;
+      color: #6d28d9;
+      font-weight: 700;
+      margin-bottom: 28px;
+      min-height: 48px;
+      text-align: center;
+    }
+    .options {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      margin-bottom: 32px;
+    }
+    .option-btn {
+      background: #ede9fe;
+      color: #6d28d9;
+      border: 2px solid #a21caf;
+      border-radius: 8px;
+      padding: 14px 0;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s, color 0.2s;
+    }
+    .option-btn.selected, .option-btn:hover {
+      background: #a21caf;
+      color: #fff;
+    }
+    .next-btn {
+      background: linear-gradient(90deg, #a21caf, #9333ea);
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      padding: 14px 0;
+      font-size: 1.1rem;
+      font-weight: 700;
+      cursor: pointer;
+      margin-top: 8px;
+      transition: background 0.2s;
+      box-shadow: 0 2px 8px #a21caf22;
+    }
+    .next-btn:disabled {
+      background: #ede9fe;
+      color: #a21caf;
+      cursor: not-allowed;
+    }
+    .result {
+      text-align: center;
+      color: #4b006e;
+      font-size: 1.1rem;
+      margin-top: 24px;
+    }
+    .result-card {
+      background: #ede9fe;
+      border-left: 8px solid #a21caf;
+      border-radius: 12px;
+      margin: 18px 0;
+      padding: 18px 18px 12px 18px;
+      text-align: left;
+      box-shadow: 0 2px 8px #a21caf11;
+      color: #4b006e;
+      position: relative;
+    }
+    .urgency {
+      position: absolute;
+      top: 18px;
+      right: 18px;
+      font-size: 0.95em;
+      font-weight: bold;
+      padding: 2px 10px;
+      border-radius: 8px;
+      color: #fff;
+    }
+    .urgency.Alta { background: #a21caf; }
+    .urgency.Moderada { background: #9333ea; }
+    .urgency.Baixa { background: #a78bfa; color: #4b006e; }
+    .result-title {
+      font-size: 1.15em;
+      font-weight: bold;
+      margin-bottom: 6px;
+      color: #6d28d9;
+    }
+    @media (max-width: 500px) {
+      .quiz-container { padding: 18px 4vw 18px 4vw; }
+    }
+  </style>
 </head>
 <body>
-    <div class="container">
-        <header>
-            <img src="logo-menopausa.jpg" alt="Menopausa Cancelada" class="logo-menopausa">
-            <p>Descubra em que fase do climatério você está e os riscos de não tratar os sintomas!</p>
-        </header>
-
-        <div id="intro" class="section active">
-            <form id="user-form">
-                <h2>Preencha seus dados para começar</h2>
-                <input type="text" id="nome" placeholder="Nome" required>
-                <input type="email" id="email" placeholder="E-mail" required>
-                <input type="text" id="telefone" placeholder="Telefone (apenas números)" maxlength="11" required>
-                <button type="submit" class="btn">Iniciar Quiz</button>
-            </form>
-        </div>
-
-        <div id="quiz-container" class="section">
-            <div id="progress-bar">
-                <div id="progress"></div>
-            </div>
-            <div id="question-number">Pergunta <span id="current">1</span> de <span id="total">8</span></div>
-            <div id="question-text"></div>
-            <div class="options" id="options"></div>
-        </div>
-
-        <div id="results" class="section">
-            <h2>Seu Resultado</h2>
-            <div id="phase"></div>
-            <div id="symptoms"></div>
-            <div id="risks"></div>
-            <div id="nutri"></div>
-            <button id="restart-btn" class="btn">Refazer o Quiz</button>
-        </div>
+  <div class="quiz-container" id="quiz">
+    <div class="progress-bar-bg">
+      <div class="progress-bar" id="progressBar" style="width:0%"></div>
     </div>
-    <script src="script.js"></script>
+    <div class="question" id="question"></div>
+    <div class="options" id="options"></div>
+    <button class="next-btn" id="nextBtn" disabled>Próxima</button>
+    <div class="result" id="result"></div>
+  </div>
+  <script>
+    // Sintomas, urgências e explicações
+    const symptomData = [
+      {
+        question: "Você sente ondas de calor?",
+        urgencia: "Moderada",
+        explicacao: "Ondas de calor indicam queda hormonal e podem afetar sono e qualidade de vida. Procure orientação para alívio dos sintomas."
+      },
+      {
+        question: "Você sente insônia?",
+        urgencia: "Alta",
+        explicacao: "A insônia prejudica a saúde mental e física, aumenta o risco de doenças cardíacas e afeta o humor. Procure tratamento especializado."
+      },
+      {
+        question: "Você sente irritabilidade?",
+        urgencia: "Moderada",
+        explicacao: "A irritabilidade pode afetar relações e bem-estar emocional. Mudanças hormonais podem ser a causa."
+      },
+      {
+        question: "Você sente ressecamento vaginal?",
+        urgencia: "Alta",
+        explicacao: "O ressecamento vaginal pode causar dor, infecções e impactar a vida sexual. Procure avaliação ginecológica."
+      },
+      {
+        question: "Você sente suores noturnos?",
+        urgencia: "Moderada",
+        explicacao: "Suores noturnos afetam o sono e a disposição, podendo indicar desequilíbrio hormonal."
+      },
+      {
+        question: "Você sente diminuição da libido?",
+        urgencia: "Baixa",
+        explicacao: "A diminuição da libido é comum, mas pode afetar autoestima e relacionamentos. Converse com um especialista."
+      },
+      {
+        question: "Você sente ansiedade?",
+        urgencia: "Alta",
+        explicacao: "A ansiedade aumenta o risco de depressão e doenças crônicas. Busque apoio psicológico e médico."
+      },
+      {
+        question: "Você sente dores articulares?",
+        urgencia: "Moderada",
+        explicacao: "Dores articulares podem indicar início de osteoporose ou inflamação. Avaliação médica é recomendada."
+      },
+      {
+        question: "Você sente cansaço frequente?",
+        urgencia: "Moderada",
+        explicacao: "Cansaço frequente pode ser sinal de anemia, distúrbios hormonais ou depressão. Procure avaliação."
+      },
+      {
+        question: "Você sente alterações de humor?",
+        urgencia: "Moderada",
+        explicacao: "Alterações de humor afetam relações e podem indicar desequilíbrio hormonal. Procure acompanhamento."
+      }
+    ];
+
+    // Perguntas de dados pessoais
+    const personalQuestions = [
+      { label: "Qual seu nome?", type: "text", name: "nome", placeholder: "Digite seu nome", required: true },
+      { label: "Qual seu e-mail?", type: "email", name: "email", placeholder: "Digite seu e-mail", required: true },
+      { label: "Qual seu telefone?", type: "tel", name: "telefone", placeholder: "Apenas números", required: true, pattern: "\\d{11}" },
+      { label: "Qual sua idade?", type: "number", name: "idade", placeholder: "Ex: 48", required: true, min: 10, max: 120 }
+    ];
+
+    // Estado do quiz
+    let current = 0;
+    let answers = {};
+    let phase = "symptoms"; // symptoms | personal | done
+
+    const quiz = document.getElementById('quiz');
+    const questionDiv = document.getElementById('question');
+    const optionsDiv = document.getElementById('options');
+    const nextBtn = document.getElementById('nextBtn');
+    const progressBar = document.getElementById('progressBar');
+    const resultDiv = document.getElementById('result');
+
+    function renderQuestion() {
+      nextBtn.disabled = true;
+      optionsDiv.innerHTML = "";
+      resultDiv.textContent = "";
+
+      // Barra de progresso
+      let total = symptomData.length + personalQuestions.length;
+      let idx = phase === "symptoms" ? current : symptomData.length + current;
+      let progress = (idx) / total * 100;
+      progressBar.style.width = progress + "%";
+
+      if (phase === "symptoms") {
+        questionDiv.textContent = symptomData[current].question;
+        // Opções Sim/Não
+        ["Sim", "Não"].forEach(opt => {
+          const btn = document.createElement('button');
+          btn.className = "option-btn";
+          btn.textContent = opt;
+          btn.onclick = () => {
+            answers["sintoma_" + current] = opt;
+            Array.from(optionsDiv.children).forEach(b => b.classList.remove('selected'));
+            btn.classList.add('selected');
+            nextBtn.disabled = false;
+          };
+          optionsDiv.appendChild(btn);
+        });
+      } else if (phase === "personal") {
+        const q = personalQuestions[current];
+        questionDiv.textContent = q.label;
+        const input = document.createElement('input');
+        input.type = q.type;
+        input.name = q.name;
+        input.placeholder = q.placeholder;
+        input.required = q.required;
+        input.className = "option-btn";
+        if (q.pattern) input.pattern = q.pattern;
+        if (q.min) input.min = q.min;
+        if (q.max) input.max = q.max;
+        input.oninput = () => {
+          if (q.type === "tel") {
+            input.value = input.value.replace(/\\D/g, '').slice(0, 11);
+          }
+          nextBtn.disabled = !input.value || (q.pattern && !(new RegExp(q.pattern).test(input.value)));
+        };
+        optionsDiv.appendChild(input);
+        input.focus();
+        nextBtn.disabled = true;
+      }
+    }
+
+    nextBtn.onclick = () => {
+      if (phase === "symptoms") {
+        current++;
+        if (current < symptomData.length) {
+          renderQuestion();
+        } else {
+          phase = "personal";
+          current = 0;
+          renderQuestion();
+        }
+      } else if (phase === "personal") {
+        const q = personalQuestions[current];
+        const input = optionsDiv.querySelector('input');
+        if (!input.value || (q.pattern && !(new RegExp(q.pattern).test(input.value)))) {
+          input.classList.add('error');
+          return;
+        }
+        answers[q.name] = input.value;
+        current++;
+        if (current < personalQuestions.length) {
+          renderQuestion();
+        } else {
+          phase = "done";
+          showResult();
+        }
+      }
+    };
+
+    function showResult() {
+      // Barra cheia
+      progressBar.style.width = "100%";
+      questionDiv.textContent = "Seu resultado personalizado:";
+      optionsDiv.innerHTML = "";
+      nextBtn.style.display = "none";
+
+      let sintomasMarcados = symptomData
+        .map((s, i) => answers["sintoma_" + i] === "Sim" ? { ...s } : null)
+        .filter(Boolean);
+
+      let nome = answers.nome || "Participante";
+      let html = `<div class='result-title'>${nome}, veja a análise dos sintomas relatados:</div>`;
+
+      if (sintomasMarcados.length === 0) {
+        html += `<div class='result-card'>
+          <b>Nenhum sintoma relatado.</b><br>
+          <span style='color:#9333ea'>Continue cuidando da sua saúde e faça acompanhamento regular!</span>
+        </div>`;
+      } else {
+        sintomasMarcados.forEach(s => {
+          html += `
+            <div class="result-card">
+              <div class="urgency ${s.urgencia}">${s.urgencia}</div>
+              <b>${s.question.replace('Você sente ', '').replace('?', '')}</b>
+              <div style="margin-top:8px;">${s.explicacao}</div>
+            </div>
+          `;
+        });
+        html += `<div style="margin-top:18px; color:#6d28d9; font-weight:600;">
+          <span>Procure acompanhamento especializado para melhorar sua qualidade de vida!</span>
+        </div>`;
+      }
+      resultDiv.innerHTML = html;
+      // Aqui você pode enviar para o Google Sheets/SheetDB se quiser
+    }
+
+    // Iniciar quiz
+    renderQuestion();
+  </script>
 </body>
 </html>
